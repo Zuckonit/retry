@@ -42,7 +42,7 @@ def get_retry_wait_time(which_time, interval):
     return wait_t
 
 
-def retry_on_errors(times=2, exceptions=(), raise_exc=True, default=False, logger=None, print_info=False,
+def retry_on_errors(times=2, exceptions=(), raise_exc=True, default=None, logger=None, print_info=False,
         wait_func=get_retry_wait_time, wait_interval=0, cbs=()):
     """
     @param times           retry的次数
@@ -51,6 +51,7 @@ def retry_on_errors(times=2, exceptions=(), raise_exc=True, default=False, logge
     @param raise_exc       retry次数用完后是否抛出异常
     @param default         retry结束不抛出异常的话，返回的默认值
     @param logger          logger如果为Logger实例， 记录日志
+    @param print_info      是否print retry信息
     @param wait_func       获取retry等待时间的函数, 每次等待时间如何计算， 自己发挥。
     @param wait_interval   等待时长
     @param cbs             [{'callback': func, 'args': xxx, '**kwargs': xxx}, ]
