@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
+"""
+    retry decorator
+    
+    ~~~~~~~~
+    retry.py
+"""
+
 import functools
 from time import sleep
 from logging import Logger
@@ -24,28 +32,29 @@ def run_callback(cb):
 
 
 def get_retry_wait_time(which_time, interval):
-    """retry wait time caculator
-       y = kx + c
+    """计算每次retry时间的方法
+       `y = kx + c`
+    @param which_time  retry的当前次数
+    @param interval    retry的时间间隔基数
     """
     k, c = 1, 0
     wait_t = k * which_time * interval + c
     return wait_t
 
 
-
 def retry_on_errors(times=2, exceptions=(), raise_exc=True, default=False, logger=None, print_info=False,
         wait_func=get_retry_wait_time, wait_interval=0, cbs=()):
     """
-    @times           retry的次数
-    @exceptions      此类异常会retry, 
-                     times为-1 retry并且exceptions为(), 或者捕获的异常在exceptions中, retry无限次
-    @raise_exc       retry次数用完后是否抛出异常
-    @default         retry结束不抛出异常的话，返回的默认值
-    @logger          logger如果为Logger实例， 记录日志
-    @wait_func       获取retry等待时间的函数
-    @wait_interval   等待时长
-    @cbs             [{'callback': func, 'args': xxx, '**kwargs': xxx}, ]
-                     抛出异常时的回调函数列表
+    @param times           retry的次数
+    @param exceptions      此类异常会retry, 
+                           times为-1 retry并且exceptions为(), 或者捕获的异常在exceptions中, retry无限次
+    @param raise_exc       retry次数用完后是否抛出异常
+    @param default         retry结束不抛出异常的话，返回的默认值
+    @param logger          logger如果为Logger实例， 记录日志
+    @param wait_func       获取retry等待时间的函数, 每次等待时间如何计算， 自己发挥。
+    @param wait_interval   等待时长
+    @param cbs             [{'callback': func, 'args': xxx, '**kwargs': xxx}, ]
+                           抛出异常时的回调函数列表
     """
     def func(f):
         @functools.wraps(f)
