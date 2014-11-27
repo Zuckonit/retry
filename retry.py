@@ -54,7 +54,7 @@ def retry_on_errors(times=2, exceptions=(), raise_exc=True, default=None, logger
     @param print_info      是否print retry信息
     @param wait_func       获取retry等待时间的函数, 每次等待时间如何计算， 自己发挥。
     @param wait_interval   等待时长
-    @param cbs             [{'callback': func, 'args': xxx, '**kwargs': xxx}, ]
+    @param cbs             [{'callback': func, 'args': xxx, 'kwargs': xxx}, ]
                            抛出异常时的回调函数列表
     """
     def func(f):
